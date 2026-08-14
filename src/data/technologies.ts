@@ -1,0 +1,15 @@
+export const technologies: string[] = [
+  "Java",
+  "Python",
+  "C#",
+  "PHP",
+  "Spring Boot",
+  ".NET",
+  "FastAPI",
+  "PostgreSQL",
+  "MySQL",
+  "MongoDB",
+  "Docker",
+  "Git",
+  "REST API",
+];
