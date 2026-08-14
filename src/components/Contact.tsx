@@ -6,7 +6,7 @@ import Reveal from "./Reveal";
 import { useLanguage } from "@/i18n/LanguageProvider";
 
 export default function Contact() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const [sent, setSent] = useState(false);
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -18,6 +18,14 @@ export default function Contact() {
     const budget = form.get("budget")?.toString() ?? "";
     const message = form.get("message")?.toString().trim() ?? "";
     const m = t.contact.telegramMessage;
+
+    // Save the lead to the spreadsheet in the background — doesn't block
+    // opening Telegram, and a failure here shouldn't break the user's flow.
+    fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, contact, type, budget, message, lang }),
+    }).catch((err) => console.error("Failed to save lead to sheet:", err));
 
     const lines = [
       m.title,
