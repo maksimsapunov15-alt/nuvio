@@ -134,7 +134,7 @@ const dictionaries: Record<Lang, Dictionary> = {
       p1: "Nuvio is a digital studio focused on building modern websites, web applications, backend systems and automation tools.",
       p2: "We combine design, technology and clean engineering to create products that are fast, reliable and built to grow with your business.",
       stats: [
-        { value: "20+", label: "Projects", detail: "Successfully delivered for our clients." },
+        { value: "10+", label: "Projects", detail: "Successfully delivered for our clients." },
         { value: "15+", label: "Clients", detail: "Companies and startups who trust us with their ideas." },
         { value: "3+", label: "Years of experience", detail: "Building digital products of varying complexity." },
         { value: "100%", label: "Focus on quality", detail: "Every project is on time, on scope, and cared for." },
@@ -242,7 +242,7 @@ const dictionaries: Record<Lang, Dictionary> = {
       p1: "Nuvio — цифровая студия, которая создаёт современные сайты, веб-приложения, backend-системы и инструменты автоматизации.",
       p2: "Мы объединяем дизайн, технологии и чистую инженерию, чтобы создавать продукты, которые быстро работают, надёжны и растут вместе с вашим бизнесом.",
       stats: [
-        { value: "20+", label: "Проектов", detail: "Успешно реализовано для наших клиентов." },
+        { value: "10+", label: "Проектов", detail: "Успешно реализовано для наших клиентов." },
         { value: "15+", label: "Клиентов", detail: "Компании и стартапы, которые доверяют нам свои идеи." },
         { value: "3+", label: "Года опыта", detail: "Разработка цифровых продуктов разной сложности." },
         { value: "100%", label: "Фокус на качество", detail: "Каждый проект — в срок, по задаче и с заботой." },
