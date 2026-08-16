@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowUpRight, Code2 } from "lucide-react";
 import Reveal from "./Reveal";
 import DeviceMockup from "./DeviceMockup";
 import { projects } from "@/data/portfolio";
@@ -27,9 +28,14 @@ export default function Portfolio() {
           {projects.map((project, i) => (
             <Reveal key={project.name} delay={(i % 2) * 0.1}>
               <div className="group relative overflow-hidden rounded-2xl border nv-hairline bg-[#0a0a0a] transition-colors duration-300 hover:border-white/25">
-                <div className="flex h-64 items-center justify-center overflow-hidden bg-black/40 py-8 transition-transform duration-500 group-hover:scale-[1.03] sm:h-72">
+                <a
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-64 items-center justify-center overflow-hidden bg-black/40 py-8 transition-transform duration-500 group-hover:scale-[1.03] sm:h-72"
+                >
                   <DeviceMockup device={project.device} label={project.name} />
-                </div>
+                </a>
                 <div className="border-t nv-hairline p-7">
                   <div className="flex items-center justify-between">
                     <h3 className="text-[20px] font-semibold tracking-tight text-white">
@@ -51,6 +57,29 @@ export default function Portfolio() {
                         {tech}
                       </span>
                     ))}
+                  </div>
+                  <div className="mt-6 flex items-center gap-5 border-t nv-hairline pt-5">
+                    <a
+                      href={project.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group/link inline-flex items-center gap-1.5 text-[13px] font-medium text-white"
+                    >
+                      {t.portfolio.liveLabel}
+                      <ArrowUpRight
+                        size={14}
+                        className="transition-transform duration-300 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5"
+                      />
+                    </a>
+                    <a
+                      href={project.repo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-[13px] font-medium text-gray-400 transition-colors duration-300 hover:text-white"
+                    >
+                      <Code2 size={14} />
+                      {t.portfolio.codeLabel}
+                    </a>
                   </div>
                 </div>
               </div>

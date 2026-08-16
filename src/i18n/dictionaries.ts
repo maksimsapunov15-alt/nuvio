@@ -57,6 +57,8 @@ export type Dictionary = {
   portfolio: {
     eyebrow: string;
     heading: string;
+    liveLabel: string;
+    codeLabel: string;
   };
   pricing: {
     eyebrow: string;
@@ -164,6 +166,8 @@ const dictionaries: Record<Lang, Dictionary> = {
     portfolio: {
       eyebrow: "Selected Work",
       heading: "Selected Work",
+      liveLabel: "Live demo",
+      codeLabel: "Code",
     },
     pricing: {
       eyebrow: "Pricing",
@@ -270,6 +274,8 @@ const dictionaries: Record<Lang, Dictionary> = {
     portfolio: {
       eyebrow: "Избранные проекты",
       heading: "Избранные проекты",
+      liveLabel: "Живая версия",
+      codeLabel: "Код",
     },
     pricing: {
       eyebrow: "Цены",
