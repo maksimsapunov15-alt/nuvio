@@ -2,8 +2,7 @@
 
 import { ArrowUpRight } from "lucide-react";
 import Reveal from "./Reveal";
-import Price from "./Price";
-import { services } from "@/data/services";
+import { directions } from "@/data/directions";
 import { useLanguage } from "@/i18n/LanguageProvider";
 
 export default function Services() {
@@ -21,24 +20,31 @@ export default function Services() {
               </div>
             </Reveal>
             <Reveal delay={0.08}>
-              <h2 className="max-w-lg text-[34px] font-semibold leading-[1.15] tracking-tight sm:text-[44px]">
+              <h2 className="max-w-lg text-[34px] font-semibold uppercase leading-[1.15] tracking-tight sm:text-[44px]">
                 {t.services.heading}
               </h2>
             </Reveal>
           </div>
           <Reveal delay={0.12}>
-            <p className="max-w-sm text-[14px] leading-relaxed text-gray-500">
-              {t.services.note}
-            </p>
+            <a
+              href="#services-detail"
+              className="group inline-flex items-center gap-2 text-[13px] font-semibold uppercase tracking-wide text-gray-400 transition-colors duration-300 hover:text-white"
+            >
+              {t.services.viewAll}
+              <ArrowUpRight
+                size={15}
+                className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              />
+            </a>
           </Reveal>
         </div>
 
-        <div className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border nv-hairline bg-white/5 sm:grid-cols-2 lg:grid-cols-4">
-          {services.map((service, i) => (
-            <Reveal key={service.slug} delay={(i % 4) * 0.06}>
+        <div className="mt-16 grid grid-cols-1 gap-px overflow-hidden border nv-hairline bg-white/5 sm:grid-cols-2 lg:grid-cols-4">
+          {directions.map((direction, i) => (
+            <Reveal key={direction.slug} delay={(i % 4) * 0.06}>
               <a
                 href="#services-detail"
-                className="group relative flex h-full flex-col justify-between gap-8 bg-black p-7 transition-colors duration-300 hover:bg-[#0a0a0a]"
+                className="group relative flex h-full min-h-[210px] flex-col justify-between gap-8 bg-black p-7 transition-colors duration-300 hover:bg-[#0a0a0a] active:bg-[#0a0a0a]"
               >
                 <div>
                   <div className="flex items-start justify-between">
@@ -51,16 +57,11 @@ export default function Services() {
                     />
                   </div>
                   <h3 className="mt-6 text-[19px] font-semibold tracking-tight text-white">
-                    {service.title[lang]}
+                    {direction.title[lang]}
                   </h3>
                   <p className="mt-3 text-[14px] leading-relaxed text-gray-500">
-                    {service.description[lang]}
+                    {direction.description[lang]}
                   </p>
-                </div>
-                <div className="border-t nv-hairline pt-4">
-                  <div className="text-[15px] font-medium text-white">
-                    <Price usd={service.priceUsd} rub={service.priceRub} />
-                  </div>
                 </div>
               </a>
             </Reveal>

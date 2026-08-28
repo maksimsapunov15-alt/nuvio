@@ -35,6 +35,7 @@ export type Dictionary = {
     eyebrow: string;
     heading: string;
     note: string;
+    viewAll: string;
   };
   servicesDetail: {
     eyebrow: string;
@@ -121,9 +122,9 @@ const dictionaries: Record<Lang, Dictionary> = {
       startProject: "Start a Project",
     },
     hero: {
-      badge: "NUVIO STUDIO / 2026",
-      headline: "We build digital products that drive real results.",
-      sub: "Nuvio creates modern websites, web applications and backend solutions designed around your business.",
+      badge: "DIGITAL SOLUTIONS",
+      headline: "Solutions that\nmove your\nbusiness forward",
+      sub: "We build thoughtful, scalable solutions that are engineered to perform.",
       ctaPrimary: "Start a Project",
       ctaSecondary: "View Services",
       scroll: "SCROLL",
@@ -142,8 +143,9 @@ const dictionaries: Record<Lang, Dictionary> = {
     },
     services: {
       eyebrow: "Services",
-      heading: "What we build",
+      heading: "Our Directions",
       note: "Final price depends on project complexity and requirements. Prices below are starting prices.",
+      viewAll: "View All",
     },
     servicesDetail: {
       eyebrow: "Service Details",
@@ -229,10 +231,10 @@ const dictionaries: Record<Lang, Dictionary> = {
       startProject: "Начать проект",
     },
     hero: {
-      badge: "NUVIO STUDIO / 2026",
-      headline: "Мы создаём цифровые продукты, которые приносят результат.",
-      sub: "Nuvio создаёт современные сайты, веб-приложения и backend-решения, разработанные под задачи вашего бизнеса.",
-      ctaPrimary: "Начать проект",
+      badge: "DIGITAL SOLUTIONS",
+      headline: "Цифровые\nрешения\nдля вашего\nбизнеса",
+      sub: "Создаём продуманные и масштабируемые решения, которые работают на результат.",
+      ctaPrimary: "Обсудить проект",
       ctaSecondary: "Смотреть услуги",
       scroll: "СКРОЛЛ",
     },
@@ -250,8 +252,9 @@ const dictionaries: Record<Lang, Dictionary> = {
     },
     services: {
       eyebrow: "Услуги",
-      heading: "Что мы делаем",
+      heading: "Наши направления",
       note: "Итоговая цена зависит от сложности и требований проекта. Ниже указаны стартовые цены.",
+      viewAll: "Посмотреть все",
     },
     servicesDetail: {
       eyebrow: "Детали услуг",

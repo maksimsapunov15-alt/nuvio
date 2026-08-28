@@ -145,3 +145,191 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* ===================== Cinematic hero + metallic logo ===================== */
+
+.nv-cinematic-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(
+    ellipse 68% 52% at 50% 30%,
+    #0d0f12 0%,
+    #050505 55%,
+    #000000 100%
+  );
+  pointer-events: none;
+}
+
+.nv-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 120% 90% at 50% 50%,
+    transparent 55%,
+    rgba(0, 0, 0, 0.65) 100%
+  );
+}
+
+.nv-smoke {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.055), transparent 70%);
+  filter: blur(46px);
+  pointer-events: none;
+  animation: nv-smoke-drift linear infinite;
+  z-index: 0;
+}
+
+@keyframes nv-smoke-drift {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translate(var(--smoke-x, 30px), var(--smoke-y, -24px)) scale(1.18);
+    opacity: 0.65;
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.35;
+  }
+}
+
+/* logo */
+
+.nv-logo-outer {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nv-logo-stage {
+  position: relative;
+  z-index: 1;
+  height: clamp(260px, 48vh, 440px);
+  width: auto;
+  aspect-ratio: 872 / 1066;
+  touch-action: none;
+  cursor: grab;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.nv-logo-stage:active,
+.nv-logo-stage.nv-logo-grabbing {
+  cursor: grabbing;
+}
+
+@media (min-width: 1024px) {
+  .nv-logo-stage {
+    height: clamp(300px, 50vh, 520px);
+  }
+}
+
+.nv-logo-perspective {
+  position: absolute;
+  inset: 0;
+  perspective: 1200px;
+}
+
+.nv-logo-rotor {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.nv-logo-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 32px 46px rgba(0, 0, 0, 0.7));
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+.nv-logo-highlight,
+.nv-logo-shade {
+  position: absolute;
+  inset: -25%;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.nv-logo-highlight {
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(255, 255, 255, 0.75),
+    rgba(255, 255, 255, 0.08) 30%,
+    transparent 50%
+  );
+  mix-blend-mode: overlay;
+  opacity: 0.6;
+}
+
+.nv-logo-shade {
+  background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.55), transparent 55%);
+  mix-blend-mode: multiply;
+  opacity: 0.5;
+}
+
+.nv-logo-platform {
+  position: absolute;
+  left: 50%;
+  bottom: -7%;
+  width: 74%;
+  transform: translateX(-50%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.nv-logo-platform-shadow {
+  width: 100%;
+  height: clamp(10px, 3vw, 18px);
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    rgba(0, 0, 0, 0.6),
+    rgba(0, 0, 0, 0.22) 60%,
+    transparent 80%
+  );
+  filter: blur(6px);
+  margin: 0 auto;
+}
+
+.nv-logo-platform-ring {
+  margin: 6px auto 0;
+  width: 86%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.16) 20%,
+    rgba(255, 255, 255, 0.32) 50%,
+    rgba(255, 255, 255, 0.16) 80%,
+    transparent
+  );
+}
+
+/* hint copy */
+
+.nv-hero-hint {
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  color: var(--nv-gray-500);
+  text-align: center;
+  line-height: 1.9;
+}
