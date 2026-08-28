@@ -80,10 +80,10 @@ function LogoMesh({ idleSpeed }: { idleSpeed: number }) {
   return (
     <mesh ref={meshRef} geometry={geometry} castShadow receiveShadow>
       <meshStandardMaterial
-        color="#eef0f2"
+        color="#111214"
         metalness={1}
-        roughness={0.16}
-        envMapIntensity={1.5}
+        roughness={0.1}
+        envMapIntensity={1.1}
       />
     </mesh>
   );
@@ -113,13 +113,16 @@ function Scene({ reduceMotion }: { reduceMotion: boolean }) {
 
   return (
     <>
-      <ambientLight intensity={0.4} />
-      <directionalLight position={[3, 4, 5]} intensity={0.7} color="#ffffff" />
-      <directionalLight position={[-4, -2, -3]} intensity={0.3} color="#ffffff" />
+      <ambientLight intensity={0.12} />
+      <directionalLight position={[3, 5, 4]} intensity={1.8} color="#ffffff" />
+      <directionalLight position={[-3.5, 1.5, 3]} intensity={0.9} color="#ffffff" />
+      <directionalLight position={[0, -3, -4]} intensity={0.35} color="#ffffff" />
+      <pointLight position={[2, 2.5, 3.5]} intensity={12} distance={9} decay={2} />
+      <pointLight position={[-2.5, -1, 2.5]} intensity={6} distance={9} decay={2} />
 
       <Suspense fallback={null}>
         <LogoMesh idleSpeed={reduceMotion ? 0 : 0.5} />
-        <Environment preset="studio" environmentIntensity={0.9} />
+        <Environment preset="studio" environmentIntensity={0.35} />
       </Suspense>
 
       <OrbitControls
