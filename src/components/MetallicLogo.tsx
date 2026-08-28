@@ -1,174 +1,150 @@
 "use client";
 
-import { useEffect, useRef, type RefObject } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState, type RefObject } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { Environment, OrbitControls } from "@react-three/drei";
+import * as THREE from "three";
+import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader.js";
 import { motion, useScroll, useTransform } from "framer-motion";
+import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 
-const LOGO_SRC = "/nuvio-logo-metal.webp";
+const SHAPE_SRC = "/nuvio-logo-shape.svg";
+const TARGET_SIZE = 2.5;
+const REST_POLAR = Math.PI / 2 - 0.12;
 
 type MetallicLogoProps = {
   heroRef: RefObject<HTMLElement | null>;
   className?: string;
 };
 
-type RotState = {
-  rotX: number;
-  rotY: number;
-  velX: number;
-  velY: number;
-  dragging: boolean;
-  lastX: number;
-  lastY: number;
-  lastT: number;
-};
-
-const REST_TILT_X = -6;
-
-export default function MetallicLogo({ heroRef, className }: MetallicLogoProps) {
-  const stageRef = useRef<HTMLDivElement>(null);
-  const rotorRef = useRef<HTMLDivElement>(null);
-  const highlightRef = useRef<HTMLDivElement>(null);
-  const shadeRef = useRef<HTMLDivElement>(null);
-  const contactShadowRef = useRef<HTMLDivElement>(null);
-
-  const state = useRef<RotState>({
-    rotX: REST_TILT_X,
-    rotY: 8,
-    velX: 0,
-    velY: 0,
-    dragging: false,
-    lastX: 0,
-    lastY: 0,
-    lastT: 0,
-  });
-
-  const reduceMotion = useRef(false);
+function LogoMesh({ idleSpeed }: { idleSpeed: number }) {
+  const [geometry, setGeometry] = useState<THREE.BufferGeometry | null>(null);
 
   useEffect(() => {
-    reduceMotion.current = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
+    let cancelled = false;
+    const loader = new SVGLoader();
+    loader.load(SHAPE_SRC, (data) => {
+      if (cancelled) return;
+      const shapes: THREE.Shape[] = [];
+      data.paths.forEach((path) => {
+        shapes.push(...SVGLoader.createShapes(path));
+      });
 
-    let raf = 0;
+      const geo = new THREE.ExtrudeGeometry(shapes, {
+        depth: 70,
+        bevelEnabled: true,
+        bevelThickness: 7,
+        bevelSize: 5,
+        bevelSegments: 4,
+        curveSegments: 20,
+      });
+      geo.computeBoundingBox();
+      geo.center();
 
-    function apply() {
-      const s = state.current;
-      const rotor = rotorRef.current;
-      const highlight = highlightRef.current;
-      const shade = shadeRef.current;
-      const shadow = contactShadowRef.current;
-      if (!rotor) return;
-
-      rotor.style.transform = `rotateX(${s.rotX}deg) rotateY(${s.rotY}deg)`;
-
-      const hx = Math.max(-40, Math.min(40, s.rotY * 1.1));
-      const hy = Math.max(-40, Math.min(40, -s.rotX * 1.6));
-      if (highlight) {
-        highlight.style.transform = `translate(${hx}%, ${hy}%)`;
+      const box = geo.boundingBox;
+      let scale = 1;
+      if (box) {
+        const size = new THREE.Vector3();
+        box.getSize(size);
+        const maxDim = Math.max(size.x, size.y, size.z);
+        scale = TARGET_SIZE / maxDim;
       }
-      if (shade) {
-        shade.style.transform = `translate(${-hx * 0.7}%, ${-hy * 0.7}%)`;
-      }
-      if (shadow) {
-        const sx = Math.max(-16, Math.min(16, s.rotY * 0.35));
-        const skew = Math.max(-10, Math.min(10, s.rotY * 0.25));
-        shadow.style.transform = `translateX(${sx}px) scaleX(${1 - Math.abs(s.rotY) * 0.002}) skewX(${skew}deg)`;
-      }
-    }
-
-    function loop() {
-      const s = state.current;
-
-      if (!s.dragging) {
-        const velMag = Math.abs(s.velX) + Math.abs(s.velY);
-        if (velMag > 0.02) {
-          s.rotY += s.velX;
-          s.rotX += s.velY;
-          s.velX *= 0.945;
-          s.velY *= 0.945;
-        } else {
-          s.velX = 0;
-          s.velY = 0;
-          if (!reduceMotion.current) {
-            s.rotY += 0.045;
-          }
-        }
-        // ease tilt back to resting position
-        s.rotX += (REST_TILT_X - s.rotX) * 0.04;
-        s.rotX = Math.max(-26, Math.min(20, s.rotX));
-      }
-
-      apply();
-      raf = requestAnimationFrame(loop);
-    }
-
-    raf = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(raf);
+      geo.scale(scale, -scale, scale); // flip Y: SVG space is Y-down
+      geo.computeVertexNormals();
+      setGeometry(geo);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
+  const meshRef = useRef<THREE.Mesh>(null);
+
+  useFrame(() => {
+    // extremely slow ambient bob so the object never feels static,
+    // independent from the drag-driven OrbitControls rotation
+    if (meshRef.current) {
+      meshRef.current.position.y = Math.sin(performance.now() / 3200) * 0.035;
+    }
+  });
+
+  if (!geometry) return null;
+
+  return (
+    <mesh ref={meshRef} geometry={geometry} castShadow receiveShadow>
+      <meshStandardMaterial
+        color="#eef0f2"
+        metalness={1}
+        roughness={0.16}
+        envMapIntensity={1.5}
+      />
+    </mesh>
+  );
+}
+
+function IdleAutoRotate({
+  controlsRef,
+  speed,
+}: {
+  controlsRef: RefObject<OrbitControlsImpl | null>;
+  speed: number;
+}) {
+  useFrame((_, delta) => {
+    const controls = controlsRef.current;
+    if (!controls) return;
+    if (!controls.autoRotate) return;
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = speed;
+    controls.update();
+    void delta;
+  });
+  return null;
+}
+
+function Scene({ reduceMotion }: { reduceMotion: boolean }) {
+  const controlsRef = useRef<OrbitControlsImpl | null>(null);
+
+  return (
+    <>
+      <ambientLight intensity={0.25} />
+      <directionalLight position={[3, 4, 5]} intensity={0.6} />
+      <directionalLight position={[-4, -2, -3]} intensity={0.25} color="#8fa2b8" />
+
+      <Suspense fallback={null}>
+        <LogoMesh idleSpeed={reduceMotion ? 0 : 0.5} />
+        <Environment preset="city" environmentIntensity={1.1} />
+      </Suspense>
+
+      <OrbitControls
+        ref={controlsRef}
+        enableZoom={false}
+        enablePan={false}
+        enableDamping
+        dampingFactor={0.08}
+        rotateSpeed={0.75}
+        autoRotate={!reduceMotion}
+        autoRotateSpeed={0.6}
+        minPolarAngle={REST_POLAR - 0.42}
+        maxPolarAngle={REST_POLAR + 0.5}
+        target={[0, 0, 0]}
+        onStart={() => {
+          if (controlsRef.current) controlsRef.current.autoRotate = false;
+        }}
+        onEnd={() => {
+          window.setTimeout(() => {
+            if (controlsRef.current) controlsRef.current.autoRotate = !reduceMotion;
+          }, 500);
+        }}
+      />
+    </>
+  );
+}
+
+export default function MetallicLogo({ heroRef, className }: MetallicLogoProps) {
+  const [reduceMotion, setReduceMotion] = useState(false);
+
   useEffect(() => {
-    const stage = stageRef.current;
-    if (!stage) return;
-
-    function onPointerDown(e: PointerEvent) {
-      const s = state.current;
-      s.dragging = true;
-      s.velX = 0;
-      s.velY = 0;
-      s.lastX = e.clientX;
-      s.lastY = e.clientY;
-      s.lastT = performance.now();
-      stage?.setPointerCapture(e.pointerId);
-      stage?.classList.add("nv-logo-grabbing");
-    }
-
-    function onPointerMove(e: PointerEvent) {
-      const s = state.current;
-      if (!s.dragging) return;
-      const now = performance.now();
-      const dt = Math.max(1, now - s.lastT);
-      const dx = e.clientX - s.lastX;
-      const dy = e.clientY - s.lastY;
-
-      const sensX = 0.42;
-      const sensY = 0.32;
-
-      s.rotY += dx * sensX;
-      s.rotX = Math.max(-26, Math.min(20, s.rotX - dy * sensY));
-
-      // instantaneous velocity for inertia (deg per frame ~16ms)
-      s.velX = (dx * sensX) * (16 / dt);
-      s.velY = (-dy * sensY) * (16 / dt);
-
-      s.lastX = e.clientX;
-      s.lastY = e.clientY;
-      s.lastT = now;
-    }
-
-    function onPointerUp(e: PointerEvent) {
-      const s = state.current;
-      s.dragging = false;
-      try {
-        stage?.releasePointerCapture(e.pointerId);
-      } catch {
-        // ignore
-      }
-      stage?.classList.remove("nv-logo-grabbing");
-      // clamp inertia so it doesn't fly off
-      s.velX = Math.max(-6, Math.min(6, s.velX));
-      s.velY = Math.max(-6, Math.min(6, s.velY));
-    }
-
-    stage.addEventListener("pointerdown", onPointerDown);
-    stage.addEventListener("pointermove", onPointerMove);
-    stage.addEventListener("pointerup", onPointerUp);
-    stage.addEventListener("pointercancel", onPointerUp);
-
-    return () => {
-      stage.removeEventListener("pointerdown", onPointerDown);
-      stage.removeEventListener("pointermove", onPointerMove);
-      stage.removeEventListener("pointerup", onPointerUp);
-      stage.removeEventListener("pointercancel", onPointerUp);
-    };
+    setReduceMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   }, []);
 
   const { scrollYProgress } = useScroll({
@@ -186,32 +162,18 @@ export default function MetallicLogo({ heroRef, className }: MetallicLogoProps) 
       style={{ scale, y: translateY, opacity, rotateX: extraTiltX }}
       className={`nv-logo-outer ${className ?? ""}`}
     >
-      <div ref={stageRef} className="nv-logo-stage" role="img" aria-label="NUVIO">
-        <div className="nv-logo-perspective">
-          <div ref={rotorRef} className="nv-logo-rotor">
-            <img
-              src={LOGO_SRC}
-              alt=""
-              draggable={false}
-              className="nv-logo-img"
-              loading="eager"
-              fetchPriority="high"
-            />
-            <div
-              ref={highlightRef}
-              className="nv-logo-highlight"
-              style={{ maskImage: `url(${LOGO_SRC})`, WebkitMaskImage: `url(${LOGO_SRC})` }}
-            />
-            <div
-              ref={shadeRef}
-              className="nv-logo-shade"
-              style={{ maskImage: `url(${LOGO_SRC})`, WebkitMaskImage: `url(${LOGO_SRC})` }}
-            />
-          </div>
-        </div>
+      <div className="nv-logo-stage nv-logo-stage-3d" role="img" aria-label="NUVIO">
+        <Canvas
+          dpr={[1, 2]}
+          camera={{ position: [0, 0.5, 5.2], fov: 32 }}
+          gl={{ alpha: true, antialias: true, preserveDrawingBuffer: true }}
+          style={{ touchAction: "none" }}
+        >
+          <Scene reduceMotion={reduceMotion} />
+        </Canvas>
 
         <div className="nv-logo-platform" aria-hidden="true">
-          <div ref={contactShadowRef} className="nv-logo-platform-shadow" />
+          <div className="nv-logo-platform-shadow" />
           <div className="nv-logo-platform-ring" />
         </div>
       </div>
