@@ -25,10 +25,17 @@ function LogoMesh({ idleSpeed }: { idleSpeed: number }) {
     const loader = new SVGLoader();
     loader.load(SHAPE_SRC, (data) => {
       if (cancelled) return;
-      const shapes: THREE.Shape[] = [];
+      const allShapes: THREE.Shape[] = [];
       data.paths.forEach((path) => {
-        shapes.push(...SVGLoader.createShapes(path));
+        allShapes.push(...SVGLoader.createShapes(path));
       });
+
+      // guard against stray degenerate/background fragments (e.g. a
+      // full-canvas rect some SVG tracers add): keep only shapes whose
+      // area is a meaningful fraction of the largest one.
+      const areas = allShapes.map((s) => Math.abs(THREE.ShapeUtils.area(s.getPoints(24))));
+      const maxArea = Math.max(...areas, 0);
+      const shapes = allShapes.filter((_, i) => areas[i] > maxArea * 0.01);
 
       const geo = new THREE.ExtrudeGeometry(shapes, {
         depth: 70,
@@ -106,13 +113,13 @@ function Scene({ reduceMotion }: { reduceMotion: boolean }) {
 
   return (
     <>
-      <ambientLight intensity={0.25} />
-      <directionalLight position={[3, 4, 5]} intensity={0.6} />
-      <directionalLight position={[-4, -2, -3]} intensity={0.25} color="#8fa2b8" />
+      <ambientLight intensity={0.4} />
+      <directionalLight position={[3, 4, 5]} intensity={0.7} color="#ffffff" />
+      <directionalLight position={[-4, -2, -3]} intensity={0.3} color="#ffffff" />
 
       <Suspense fallback={null}>
         <LogoMesh idleSpeed={reduceMotion ? 0 : 0.5} />
-        <Environment preset="city" environmentIntensity={1.1} />
+        <Environment preset="studio" environmentIntensity={0.9} />
       </Suspense>
 
       <OrbitControls
