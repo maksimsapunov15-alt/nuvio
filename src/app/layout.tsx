@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import ScrollProgress from "@/components/ScrollProgress";
 import { LanguageProvider } from "@/i18n/LanguageProvider";
@@ -66,6 +67,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <div className="nv-grain" aria-hidden="true" />
           {children}
         </LanguageProvider>
+        <Analytics />
       </body>
     </html>
   );
