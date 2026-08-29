@@ -214,7 +214,7 @@ body {
   height: clamp(260px, 48vh, 440px);
   width: auto;
   aspect-ratio: 872 / 1066;
-  touch-action: none;
+  touch-action: pan-y;
   cursor: grab;
   -webkit-user-select: none;
   user-select: none;
@@ -231,7 +231,7 @@ body {
 }
 
 .nv-logo-stage-3d canvas {
-  touch-action: none;
+  touch-action: pan-y;
 }
 
 .nv-logo-platform {

@@ -162,14 +162,13 @@ export default function MetallicLogo({ heroRef, className }: MetallicLogoProps) 
     offset: ["start start", "end start"],
   });
 
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.62]);
-  const translateY = useTransform(scrollYProgress, [0, 1], [0, -70]);
-  const opacity = useTransform(scrollYProgress, [0, 0.85], [1, 0.25]);
-  const extraTiltX = useTransform(scrollYProgress, [0, 1], [0, 10]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.8]);
+  const translateY = useTransform(scrollYProgress, [0, 1], [0, -32]);
+  const opacity = useTransform(scrollYProgress, [0, 0.85], [1, 0.4]);
 
   return (
     <motion.div
-      style={{ scale, y: translateY, opacity, rotateX: extraTiltX }}
+      style={{ scale, y: translateY, opacity }}
       className={`nv-logo-outer ${className ?? ""}`}
     >
       <div className="nv-logo-stage nv-logo-stage-3d" role="img" aria-label="NUVIO">
@@ -177,7 +176,7 @@ export default function MetallicLogo({ heroRef, className }: MetallicLogoProps) 
           dpr={[1, 2]}
           camera={{ position: [0, 0.5, 5.2], fov: 32 }}
           gl={{ alpha: true, antialias: true, preserveDrawingBuffer: true }}
-          style={{ touchAction: "none" }}
+          style={{ touchAction: "pan-y" }}
         >
           <Scene reduceMotion={reduceMotion} />
         </Canvas>
