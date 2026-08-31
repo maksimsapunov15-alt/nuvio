@@ -4,21 +4,127 @@
   --nv-black: #000000;
   --nv-bg: #0a0a0a;
   --nv-surface: #111111;
+  --nv-surface-2: #161616;
+  --nv-graphite: #1c1c1e;
   --nv-white: #ffffff;
+  --nv-gray-100: #e5e5e5;
   --nv-gray-300: #a0a0a0;
   --nv-gray-500: #666666;
+  --nv-gray-700: #3a3a3a;
   --nv-border: rgba(255, 255, 255, 0.08);
   --nv-border-strong: rgba(255, 255, 255, 0.16);
+  /* neutral specular-highlight reference, matches the chrome logo — used only
+     at low opacity for hairlines/glows, never as a saturated accent color */
+  --nv-chrome-hi: rgba(255, 255, 255, 0.35);
+
+  /* Typography system — two families, sized per composition rather than
+     one rigid scale (see font-family vars below + layout.tsx for loading):
+       - Inter (--font-inter)  → everything: nav, buttons, body, headlines,
+         prices, forms — one confident grotesk, no serif mixed in
+       - JetBrains Mono (--font-mono)  → numerals + index marks: chapter
+         numbers, service list indices, the chapter-index rail            */
+  --text-hero: 44px; /* Hero headline band, mobile */
+  --text-hero-lg: 88px; /* Hero headline band, desktop */
+  --text-statement: 28px; /* About pull-quote / CTA close, mobile */
+  --text-statement-lg: 42px; /* desktop */
+  --text-heading: 22px; /* chapter/sub headings, mobile */
+  --text-heading-lg: 28px; /* desktop */
+  --text-body-lg: 16px;
+  --text-body: 14px;
+  --text-small: 12px;
+  --text-label: 11px; /* mono eyebrow/index labels, wide tracking */
+  --text-index-lg: 72px; /* big watermark numerals, e.g. Capability rows */
+
+  /* motion — single source of truth, mirrored in src/lib/motion.ts */
+  --ease-nv: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-reveal: 0.7s;
+  --duration-fast: 0.3s;
+
+  /* shadcn base tokens — the site is always dark (no light/dark toggle), so
+     these map straight onto the nv- palette instead of a separate .dark
+     block. Required for the ui/ primitives (button, input, select, …) to
+     render styled instead of falling back to unstyled browser defaults. */
+  --background: var(--nv-black);
+  --foreground: var(--nv-white);
+  --card: var(--nv-surface);
+  --card-foreground: var(--nv-white);
+  --popover: var(--nv-surface);
+  --popover-foreground: var(--nv-white);
+  --primary: var(--nv-white);
+  --primary-foreground: var(--nv-black);
+  --secondary: var(--nv-surface-2);
+  --secondary-foreground: var(--nv-white);
+  --muted: var(--nv-surface);
+  --muted-foreground: var(--nv-gray-300);
+  --accent: var(--nv-surface-2);
+  --accent-foreground: var(--nv-white);
+  --destructive: #ef4444;
+  --border: var(--nv-border);
+  --input: var(--nv-border);
+  --ring: var(--nv-chrome-hi);
+  --radius: 0.625rem;
 }
 
 @theme inline {
   --color-nv-black: var(--nv-black);
   --color-nv-bg: var(--nv-bg);
   --color-nv-surface: var(--nv-surface);
+  --color-nv-surface-2: var(--nv-surface-2);
+  --color-nv-graphite: var(--nv-graphite);
   --color-nv-white: var(--nv-white);
+  --color-nv-gray-100: var(--nv-gray-100);
   --color-nv-gray-300: var(--nv-gray-300);
   --color-nv-gray-500: var(--nv-gray-500);
+  --color-nv-gray-700: var(--nv-gray-700);
+  --color-nv-chrome-hi: var(--nv-chrome-hi);
   --font-sans: var(--font-inter);
+  --font-mono: var(--font-mono);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* typography system as Tailwind text-* utilities (mobile token, paired
+     "-lg" desktop token applied via an lg: breakpoint at each call site) */
+  --text-hero: var(--text-hero);
+  --text-hero--line-height: 1.02;
+  --text-hero-lg: var(--text-hero-lg);
+  --text-hero-lg--line-height: 0.98;
+  --text-statement: var(--text-statement);
+  --text-statement--line-height: 1.2;
+  --text-statement-lg: var(--text-statement-lg);
+  --text-statement-lg--line-height: 1.15;
+  --text-heading: var(--text-heading);
+  --text-heading--line-height: 1.25;
+  --text-heading-lg: var(--text-heading-lg);
+  --text-heading-lg--line-height: 1.2;
+  --text-body-lg: var(--text-body-lg);
+  --text-body-lg--line-height: 1.6;
+  --text-body: var(--text-body);
+  --text-body--line-height: 1.6;
+  --text-small: var(--text-small);
+  --text-label: var(--text-label);
+  --text-index-lg: var(--text-index-lg);
+  --text-index-lg--line-height: 1;
 }
 
 * {
@@ -90,33 +196,11 @@ body {
   }
 }
 
-.nv-eyebrow {
-  font-size: 12px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--nv-gray-300);
-  font-weight: 500;
-}
-
-.nv-divider {
-  height: 1px;
-  width: 40px;
-  background: linear-gradient(90deg, var(--nv-white), transparent);
-}
-
 .nv-hairline {
   border-color: var(--nv-border);
 }
 
-.nv-radial-glow {
-  background: radial-gradient(
-    ellipse 60% 50% at 50% 0%,
-    rgba(255, 255, 255, 0.08),
-    transparent 70%
-  );
-}
-
-@keyframes nv-marquee {
+@keyframes nv-tech-marquee {
   from {
     transform: translateX(0);
   }
@@ -125,159 +209,39 @@ body {
   }
 }
 
-.nv-marquee-track {
-  animation: nv-marquee 32s linear infinite;
+.nv-tech-track {
+  animation: nv-tech-marquee 34s linear infinite;
+}
+.group:hover .nv-tech-track {
+  animation-play-state: paused;
 }
 
-@keyframes nv-float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-18px) rotate(2deg); }
+/* =====================================================================
+   Field system — the atmosphere. Every chapter picks one flat tone, on
+   purpose: no texture layers, no gradients, no light/shadow effects
+   stacked on top. Just plain color per chapter.
+   ===================================================================== */
+
+/* tone — the "material changes between chapters" requirement. Three real
+   fills, not shades of the same black. */
+.nv-field-void {
+  background: var(--nv-black);
+}
+.nv-field-floor {
+  background: var(--nv-bg);
+}
+.nv-field-graphite {
+  background: var(--nv-graphite);
 }
 
-.nv-float {
-  animation: nv-float 8s ease-in-out infinite;
-}
+/* static glow behind the new centered HeroLogo — no animation, no parallax */
 
-.nv-hide-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.nv-hide-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-/* ===================== Cinematic hero + metallic logo ===================== */
-
-.nv-cinematic-bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
+.nv-logo-glow {
   background: radial-gradient(
-    ellipse 68% 52% at 50% 30%,
-    #0d0f12 0%,
-    #050505 55%,
-    #000000 100%
+    ellipse 60% 55% at 50% 45%,
+    var(--nv-chrome-hi),
+    transparent 72%
   );
-  pointer-events: none;
-}
-
-.nv-vignette {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse 120% 90% at 50% 50%,
-    transparent 55%,
-    rgba(0, 0, 0, 0.65) 100%
-  );
-}
-
-.nv-smoke {
-  position: absolute;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.055), transparent 70%);
-  filter: blur(46px);
-  pointer-events: none;
-  animation: nv-smoke-drift linear infinite;
-  z-index: 0;
-}
-
-@keyframes nv-smoke-drift {
-  0% {
-    transform: translate(0, 0) scale(1);
-    opacity: 0.35;
-  }
-  50% {
-    transform: translate(var(--smoke-x, 30px), var(--smoke-y, -24px)) scale(1.18);
-    opacity: 0.65;
-  }
-  100% {
-    transform: translate(0, 0) scale(1);
-    opacity: 0.35;
-  }
-}
-
-/* logo */
-
-.nv-logo-outer {
-  position: relative;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.nv-logo-stage {
-  position: relative;
-  z-index: 1;
-  height: clamp(260px, 48vh, 440px);
-  width: auto;
-  aspect-ratio: 872 / 1066;
-  touch-action: pan-y;
-  cursor: grab;
-  -webkit-user-select: none;
-  user-select: none;
-}
-.nv-logo-stage:active,
-.nv-logo-stage.nv-logo-grabbing {
-  cursor: grabbing;
-}
-
-@media (min-width: 1024px) {
-  .nv-logo-stage {
-    height: clamp(300px, 50vh, 520px);
-  }
-}
-
-.nv-logo-stage-3d canvas {
-  touch-action: pan-y;
-}
-
-.nv-logo-platform {
-  position: absolute;
-  left: 50%;
-  bottom: -7%;
-  width: 74%;
-  transform: translateX(-50%);
-  z-index: -1;
-  pointer-events: none;
-}
-
-.nv-logo-platform-shadow {
-  width: 100%;
-  height: clamp(10px, 3vw, 18px);
-  border-radius: 50%;
-  background: radial-gradient(
-    closest-side,
-    rgba(0, 0, 0, 0.6),
-    rgba(0, 0, 0, 0.22) 60%,
-    transparent 80%
-  );
-  filter: blur(6px);
-  margin: 0 auto;
-}
-
-.nv-logo-platform-ring {
-  margin: 6px auto 0;
-  width: 86%;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.16) 20%,
-    rgba(255, 255, 255, 0.32) 50%,
-    rgba(255, 255, 255, 0.16) 80%,
-    transparent
-  );
-}
-
-/* hint copy */
-
-.nv-hero-hint {
-  font-size: 10.5px;
-  letter-spacing: 0.18em;
-  color: var(--nv-gray-500);
-  text-align: center;
-  line-height: 1.9;
+  opacity: 0.06;
+  filter: blur(30px);
 }

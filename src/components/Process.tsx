@@ -1,78 +1,41 @@
 "use client";
 
-import Reveal from "./Reveal";
-import { processSteps } from "@/data/process";
 import { useLanguage } from "@/i18n/LanguageProvider";
+import { processSteps } from "@/data/process";
+import Reveal from "./Reveal";
 
+/**
+ * Process — the quietest chapter on the page, deliberately spare: a single
+ * connecting rule, big mono step numbers, one clause of description each.
+ * A breathing beat between the two heavier chapters around it.
+ */
 export default function Process() {
   const { t, lang } = useLanguage();
 
   return (
-    <section className="relative border-t nv-hairline py-28 lg:py-36">
-      <div className="nv-container">
+    <section id="process" className="nv-field-floor relative">
+      <div className="nv-container py-24 lg:py-32">
         <Reveal>
-          <div className="mb-5 flex items-center gap-3">
-            <span className="nv-divider" />
-            <span className="nv-eyebrow">{t.process.eyebrow}</span>
-          </div>
+          <span className="text-label font-mono tracking-[0.2em] text-gray-600">
+            {t.process.eyebrow}
+          </span>
         </Reveal>
         <Reveal delay={0.08}>
-          <h2 className="max-w-lg text-[34px] font-semibold leading-[1.15] tracking-tight sm:text-[44px]">
+          <h2 className="text-heading lg:text-heading-lg mt-6 max-w-md font-sans font-semibold tracking-tight text-white">
             {t.process.heading}
           </h2>
         </Reveal>
 
-        {/* Desktop horizontal timeline */}
-        <div className="mt-20 hidden lg:block">
-          <div className="grid grid-cols-5 gap-6">
-            {processSteps.map((step, i) => (
-              <Reveal key={step.index} delay={i * 0.08}>
-                <div className="relative">
-                  <div className="flex items-center gap-3">
-                    <span className="text-[13px] font-medium text-gray-500">
-                      {step.index}
-                    </span>
-                    <span className="h-px flex-1 bg-white/15" />
-                  </div>
-                  <div className="mt-6 h-2 w-2 rounded-full bg-white" />
-                  <h3 className="mt-5 text-[17px] font-semibold tracking-tight text-white">
-                    {step.title[lang]}
-                  </h3>
-                  <p className="mt-2.5 text-[13px] leading-relaxed text-gray-500">
-                    {step.description[lang]}
-                  </p>
-                  {i < processSteps.length - 1 && (
-                    <span className="absolute right-[-14px] top-[38px] text-gray-700">
-                      →
-                    </span>
-                  )}
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-
-        {/* Mobile / tablet vertical timeline */}
-        <div className="mt-16 flex flex-col lg:hidden">
+        <div className="relative mt-16 max-w-2xl pl-10 lg:pl-14">
+          <div className="absolute top-2 bottom-2 left-0 w-px bg-white/10" aria-hidden="true" />
           {processSteps.map((step, i) => (
-            <Reveal key={step.index} delay={i * 0.06}>
-              <div className="flex gap-6">
-                <div className="flex flex-col items-center">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border nv-hairline text-[12px] text-gray-400">
-                    {step.index}
-                  </div>
-                  {i < processSteps.length - 1 && (
-                    <span className="mt-1 w-px flex-1 bg-white/15" />
-                  )}
-                </div>
-                <div className="pb-10">
-                  <h3 className="text-[17px] font-semibold tracking-tight text-white">
-                    {step.title[lang]}
-                  </h3>
-                  <p className="mt-2 text-[14px] leading-relaxed text-gray-500">
-                    {step.description[lang]}
-                  </p>
-                </div>
+            <Reveal key={step.index} delay={0.1 + i * 0.05}>
+              <div className="relative border-b border-white/5 py-8 last:border-b-0">
+                <span className="absolute -left-10 top-8 font-mono text-small text-gray-600 lg:-left-14">
+                  {step.index}
+                </span>
+                <h3 className="text-body-lg font-medium text-white">{step.title[lang]}</h3>
+                <p className="text-body mt-2 text-gray-500">{step.description[lang]}</p>
               </div>
             </Reveal>
           ))}

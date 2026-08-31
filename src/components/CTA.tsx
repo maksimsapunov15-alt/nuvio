@@ -1,38 +1,36 @@
 "use client";
 
-import { ArrowUpRight } from "lucide-react";
-import Reveal from "./Reveal";
 import { useLanguage } from "@/i18n/LanguageProvider";
+import Reveal from "./Reveal";
+import CTAButton from "./CTAButton";
 
+/**
+ * CTA — closing statement. One large serif line, one action, centered,
+ * minimal — a bookend that echoes Hero's restraint. A graphite tone beat
+ * (not another black panel) between Pricing and Contact.
+ */
 export default function CTA() {
   const { t } = useLanguage();
 
   return (
-    <section className="nv-radial-glow relative border-t nv-hairline py-32 lg:py-44">
-      <div className="nv-container flex flex-col items-center text-center">
+    <section className="nv-field-graphite relative overflow-hidden">
+      <div className="nv-container relative flex flex-col items-center py-28 text-center lg:py-40">
         <Reveal>
-          <h2 className="max-w-2xl text-[36px] font-semibold leading-[1.12] tracking-tight sm:text-[52px]">
+          <h2 className="text-statement lg:text-statement-lg max-w-2xl font-sans font-semibold tracking-tight text-white">
             {t.cta.headingLine1}
             <br />
             {t.cta.headingLine2}
           </h2>
         </Reveal>
         <Reveal delay={0.12}>
-          <p className="mt-6 max-w-md text-[16px] leading-relaxed text-gray-500">
-            {t.cta.sub}
-          </p>
+          <p className="text-body-lg mt-6 max-w-md text-gray-400">{t.cta.sub}</p>
         </Reveal>
         <Reveal delay={0.2}>
-          <a
-            href="#contact"
-            className="group mt-10 inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-[15px] font-semibold text-black transition-transform duration-300 hover:-translate-y-0.5"
-          >
-            {t.cta.button}
-            <ArrowUpRight
-              size={17}
-              className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-            />
-          </a>
+          <div className="mt-10">
+            <CTAButton href="#contact" size="lg">
+              {t.cta.button}
+            </CTAButton>
+          </div>
         </Reveal>
       </div>
     </section>

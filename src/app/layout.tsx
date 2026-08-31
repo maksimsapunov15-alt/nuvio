@@ -1,13 +1,24 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import ScrollProgress from "@/components/ScrollProgress";
+import ChapterIndex from "@/components/ChapterIndex";
 import { LanguageProvider } from "@/i18n/LanguageProvider";
 
+// UI/body — nav, buttons, list rows, prices, form fields.
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin", "cyrillic"],
+  display: "swap",
+});
+
+// Numerals and index marks — chapter numbers, service list indices, the
+// chapter-index rail. A deliberate nod to "clean engineering."
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
+  subsets: ["latin", "cyrillic"],
+  weight: ["400", "500"],
   display: "swap",
 });
 
@@ -60,10 +71,14 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="ru" className={`${inter.variable} h-full antialiased`}>
+    <html
+      lang="ru"
+      className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
+    >
       <body className="min-h-full flex flex-col bg-black text-white selection:bg-white selection:text-black">
         <LanguageProvider>
           <ScrollProgress />
+          <ChapterIndex />
           <div className="nv-grain" aria-hidden="true" />
           {children}
         </LanguageProvider>

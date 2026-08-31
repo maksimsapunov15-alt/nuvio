@@ -1,30 +1,33 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import Capability from "@/components/Capability";
+import LaptopScene from "@/components/scenes/LaptopScene";
 import About from "@/components/About";
-import Services from "@/components/Services";
-import ServicesDetail from "@/components/ServicesDetail";
-import WhyNuvio from "@/components/WhyNuvio";
 import Process from "@/components/Process";
 import Technologies from "@/components/Technologies";
-import Portfolio from "@/components/Portfolio";
+import PhoneScene from "@/components/scenes/PhoneScene";
+import Work from "@/components/Work";
 import Pricing from "@/components/Pricing";
 import CTA from "@/components/CTA";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
+// Chapter sequence: brand (Hero) → product (Laptop) → information (About,
+// Process) → technology (the Technologies seam) → product (Phone) → proof
+// (Work) → pricing → CTA → contact.
 export default function Home() {
   return (
     <>
       <Navbar />
       <main>
         <Hero />
+        <Capability />
+        <LaptopScene />
         <About />
-        <Services />
-        <ServicesDetail />
-        <WhyNuvio />
         <Process />
         <Technologies />
-        <Portfolio />
+        <PhoneScene />
+        <Work />
         <Pricing />
         <CTA />
         <Contact />

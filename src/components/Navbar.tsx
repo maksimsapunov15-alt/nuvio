@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowUpRight, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { navLinks } from "@/data/nav";
 import { useLanguage } from "@/i18n/LanguageProvider";
 import LanguageToggle from "./LanguageToggle";
+import CTAButton from "./CTAButton";
 
 export default function Navbar() {
   const { t } = useLanguage();
@@ -37,7 +38,7 @@ export default function Navbar() {
       <nav className="nv-container flex h-[76px] items-center justify-between">
         <a
           href="#home"
-          className="text-[15px] font-semibold tracking-[0.32em] text-white"
+          className="text-body-lg font-sans font-bold tracking-[0.28em] text-white"
         >
           NUVIO
         </a>
@@ -47,7 +48,7 @@ export default function Navbar() {
             <li key={link.href}>
               <a
                 href={link.href}
-                className="group relative text-[13px] font-medium tracking-wide text-gray-300 transition-colors duration-300 hover:text-white"
+                className="text-small group relative font-medium tracking-wide text-gray-300 transition-colors duration-300 hover:text-white"
               >
                 {t.nav[link.key]}
                 <span className="absolute -bottom-1 left-0 h-px w-0 bg-white transition-all duration-300 group-hover:w-full" />
@@ -58,16 +59,9 @@ export default function Navbar() {
 
         <div className="hidden items-center gap-4 lg:flex">
           <LanguageToggle />
-          <a
-            href="#contact"
-            className="group inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-2.5 text-[13px] font-medium text-white transition-all duration-300 hover:border-white hover:bg-white hover:text-black"
-          >
+          <CTAButton href="#contact" variant="outline" icon={false}>
             {t.nav.startProject}
-            <ArrowUpRight
-              size={14}
-              className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-            />
-          </a>
+          </CTAButton>
         </div>
 
         <div className="flex items-center gap-3 lg:hidden">
@@ -105,14 +99,9 @@ export default function Navbar() {
                 </li>
               ))}
               <li className="pt-4">
-                <a
-                  href="#contact"
-                  onClick={() => setOpen(false)}
-                  className="inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-3 text-[14px] font-medium text-white"
-                >
+                <CTAButton href="#contact" variant="outline" onClick={() => setOpen(false)}>
                   {t.nav.startProject}
-                  <ArrowUpRight size={14} />
-                </a>
+                </CTAButton>
               </li>
             </ul>
           </motion.div>
