@@ -118,6 +118,36 @@
 .left { left: 3%; }
 .right { right: 3%; }
 
+.socials {
+  position: absolute;
+  bottom: max(22px, env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+
+.socials a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 8px 5px;
+  color: #888;
+  text-decoration: none;
+  transition: color 180ms ease;
+}
+
+.socials a:hover { color: #e0d4bf; }
+.socials a:focus-visible {
+  color: #e0d4bf;
+  outline: 1px dashed #999;
+  outline-offset: 4px;
+}
+.socialDivider { color: #383838; }
+
 .hitArea:focus-visible {
   outline: 1px dashed #999;
   outline-offset: 10px;

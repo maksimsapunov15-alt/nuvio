@@ -158,6 +158,11 @@ export default function EyesTeaser() {
           <button className={`${styles.hitArea} ${styles.right}`} type="button" onClick={shake} aria-label="Потревожить правый глаз" />
         </span>
       </div>
+      <nav className={styles.socials} aria-label="Социальные сети">
+        <a href="https://www.tiktok.com/@nuvioit" target="_blank" rel="noopener noreferrer" aria-label="TikTok @nuvioit — открыть в новой вкладке">TikTok <span aria-hidden="true">↗</span></a>
+        <span className={styles.socialDivider} aria-hidden="true">/</span>
+        <a href="https://www.instagram.com/nuvioiti/" target="_blank" rel="noopener noreferrer" aria-label="Instagram @nuvioiti — открыть в новой вкладке">Instagram <span aria-hidden="true">↗</span></a>
+      </nav>
     </main>
   );
 }
