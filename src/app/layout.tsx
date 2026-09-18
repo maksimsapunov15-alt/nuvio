@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
-import ScrollProgress from "@/components/ScrollProgress";
-import ChapterIndex from "@/components/ChapterIndex";
 import { LanguageProvider } from "@/i18n/LanguageProvider";
 
 // UI/body — nav, buttons, list rows, prices, form fields.
@@ -46,7 +44,8 @@ export const metadata: Metadata = {
   authors: [{ name: "Nuvio Studio" }],
   creator: "Nuvio Studio",
   icons: {
-    icon: "/icon.svg",
+    icon: "/icon.svg?v=eye-20260917",
+    apple: "/apple-eye.png",
   },
   openGraph: {
     type: "website",
@@ -77,9 +76,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col bg-black text-white selection:bg-white selection:text-black">
         <LanguageProvider>
-          <ScrollProgress />
-          <ChapterIndex />
-          <div className="nv-grain" aria-hidden="true" />
           {children}
         </LanguageProvider>
         <Analytics />
